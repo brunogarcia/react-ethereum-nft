@@ -33,8 +33,9 @@ const App = () => {
     /*
     * User can have multiple authorized accounts, we grab the first one if its there!
     */
-    if (accounts && Array.isArray(accounts) && accounts.length !== 0) {
-      const account = accounts[0];
+    const isValidAccount = accounts && Array.isArray(accounts) && accounts.length !== 0;
+    if (isValidAccount) {
+      const [account] = accounts;
       console.log("Found an authorized account:", account);
       setCurrentAccount(account);
     } else {
@@ -42,9 +43,39 @@ const App = () => {
     }
   }
 
+/*
+  * Implement your connectWallet method here
+  */
+const connectWallet = async () => {
+  try {
+    const { ethereum } = window;
+
+    if (!ethereum) {
+      alert("Get MetaMask!");
+      return;
+    }
+
+    /*
+    * Fancy method to request access to account.
+    */
+    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+
+    /*
+    * Boom! This should print out public address once we authorize Metamask.
+    */
+    const isValidAccount = accounts && Array.isArray(accounts) && accounts.length !== 0;
+    if (isValidAccount) {
+      console.log("Connected", accounts[0]);
+      setCurrentAccount(accounts[0]); 
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
   // Render Methods
   const renderNotConnectedContainer = () => (
-    <button className="cta-button connect-wallet-button">
+    <button onClick={connectWallet} className="cta-button connect-wallet-button">
       Connect to Wallet
     </button>
   );
@@ -61,7 +92,13 @@ const App = () => {
           <p className="sub-text">
             Each unique. Each beautiful. Discover your NFT today.
           </p>
-          {renderNotConnectedContainer()}
+          {currentAccount === "" ? (
+            renderNotConnectedContainer()
+          ) : (
+            <button className="cta-button connect-wallet-button">
+              Mint NFT
+            </button>
+          )}
         </div>
         <div className="footer-container">
           <a
