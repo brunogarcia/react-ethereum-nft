@@ -10,3 +10,9 @@ and build your own React dApp to let friends connect their wallets and interact 
 ```
 yarn dev
 ```
+
+### After change the smart contract
+
+1. Redeploy the smart contract.
+2. Update contract address on the `.env` file.
+3. Update ABI file on the web app.
