@@ -1,6 +1,8 @@
+import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 
 import './styles/App.css';
+import contract from './utils/contract.json';
 
 // Constants
 const OPENSEA_LINK = '';
@@ -44,34 +46,63 @@ const App = () => {
   }
 
 /*
-  * Implement your connectWallet method here
+  * Connect wallet
   */
-const connectWallet = async () => {
-  try {
-    const { ethereum } = window;
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
 
-    if (!ethereum) {
-      alert("Get MetaMask!");
-      return;
+      if (!ethereum) {
+        alert("Get MetaMask!");
+        return;
+      }
+
+      /*
+      * Fancy method to request access to account.
+      */
+      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+
+      /*
+      * Boom! This should print out public address once we authorize Metamask.
+      */
+      const isValidAccount = accounts && Array.isArray(accounts) && accounts.length !== 0;
+      if (isValidAccount) {
+        console.log("Connected", accounts[0]);
+        setCurrentAccount(accounts[0]); 
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-    /*
-    * Fancy method to request access to account.
-    */
-    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-
-    /*
-    * Boom! This should print out public address once we authorize Metamask.
-    */
-    const isValidAccount = accounts && Array.isArray(accounts) && accounts.length !== 0;
-    if (isValidAccount) {
-      console.log("Connected", accounts[0]);
-      setCurrentAccount(accounts[0]); 
-    }
-  } catch (error) {
-    console.log(error);
   }
-}
+
+  /*
+  * Ask the smart contract to mint our NFT
+  */
+  const askContractToMintNft = async () => {
+    const CONTRACT_ADDRESS = "0xD44f53BbB3DDb32B93f4f2eEC01B3CB326C89024";
+  
+    try {
+      const { ethereum } = window;
+  
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+  
+        console.log("Going to pop wallet now to pay gas...")
+        let nftTxn = await connectedContract.makeAnEpicNFTList();
+  
+        console.log("Mining...please wait.")
+        await nftTxn.wait();
+        
+        console.log(`Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`);
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   // Render Methods
   const renderNotConnectedContainer = () => (
@@ -95,7 +126,7 @@ const connectWallet = async () => {
           {currentAccount === "" ? (
             renderNotConnectedContainer()
           ) : (
-            <button className="cta-button connect-wallet-button">
+            <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
               Mint NFT
             </button>
           )}

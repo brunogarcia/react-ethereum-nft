@@ -1,9 +1,11 @@
 /// <reference types="vite/client" />
 
-import { MetaMaskInpageProvider } from "@metamask/providers";
+import { ethers } from "ethers";
+
+const { ExternalProvider } = ethers.providers;
 
 declare global {
   interface Window {
-    ethereum: MetaMaskInpageProvider;
+    ethereum: ExternalProvider;
   }
 }
