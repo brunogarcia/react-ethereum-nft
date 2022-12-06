@@ -20,5 +20,5 @@ yarn dev
 ## Notes
 
 1. Redeploy the smart contract.
-2. Update contract address on the `.env` file.
+2. Update contract address on the `.env.local` file.
 3. Update ABI file on the web app.
