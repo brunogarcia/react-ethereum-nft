@@ -5,13 +5,19 @@
 Programmatically generate your own NFT collection, write + deploy a smart contract in Solidity, 
 and build your own React dApp to let friends connect their wallets and interact w/ your NFTs.
 
+## Contracts
+
+> 🔔 Rename the file `.env.example` to `.env.local`. And then add the contract address.
+
+The contracts are stored on [https://github.com/brunogarcia/ethereum-nft](https://github.com/brunogarcia/ethereum-nft)
+
 ## Development
 
 ```
 yarn dev
 ```
 
-### After change the smart contract
+## Notes
 
 1. Redeploy the smart contract.
 2. Update contract address on the `.env` file.
