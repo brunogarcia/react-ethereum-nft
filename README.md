@@ -5,6 +5,10 @@
 Programmatically generate your own NFT collection, write + deploy a smart contract in Solidity, 
 and build your own React dApp to let friends connect their wallets and interact w/ your NFTs.
 
+## NFT on OpenSea
+
+[https://testnets.opensea.io/brunogarcia](https://testnets.opensea.io/brunogarcia)
+
 ## Contracts
 
 > 🔔 Rename the file `.env.example` to `.env.local`. And then add the contract address.
