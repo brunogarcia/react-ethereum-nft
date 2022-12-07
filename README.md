@@ -13,7 +13,7 @@ and build your own React dApp to let friends connect their wallets and interact 
 
 > 🔔 Rename the file `.env.example` to `.env.local`. And then add the contract address.
 
-The contracts are stored on [https://github.com/brunogarcia/ethereum-nft](https://github.com/brunogarcia/ethereum-nft)
+The contracts are stored on [https://github.com/brunogarcia/smart-contracts-ethereum](https://github.com/brunogarcia/smart-contracts-ethereum)
 
 ## Development
 
